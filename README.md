@@ -1,8 +1,5 @@
 # 🌟 eightclub: Interactive Onboarding & Question Experience
 
-A comprehensive Flutter application featuring an elegant onboarding flow with interactive experience selection and dynamic question capture, built with modern architecture and polished animations.
-
-
 ## ✨ Features
 
 ### 🎯 **Experience Type Selection Screen**
