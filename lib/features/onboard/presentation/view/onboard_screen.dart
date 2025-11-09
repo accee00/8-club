@@ -603,10 +603,20 @@ class _OnboardScreenState extends State<OnboardScreen> {
                               ),
                             ),
                           const SizedBox(height: 15),
-                          CustomTextFeild(
+                          CustomTextField(
                             controller: _textController,
                             maxLines: adaptiveMaxLines,
                             hintText: '/ Start typing here',
+                            maxLength: 600,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Feild is empty.';
+                              }
+                              if (value.length > 600) {
+                                return 'Length is greater than 600.';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 10),
 
@@ -663,20 +673,16 @@ class _OnboardScreenState extends State<OnboardScreen> {
                     ),
                     child: Row(
                       children: [
-                        // Use ternary operator for conditional rendering
                         _shouldShowSelector()
                             ? _videoAudioSelector(context)
-                            : Container(), // Empty container when selector is hidden
+                            : Container(),
                         _shouldShowSelector()
                             ? const SizedBox(width: 40)
-                            : const SizedBox(
-                                width: 0,
-                              ), // No space when selector is hidden
+                            : const SizedBox(width: 0),
                         Expanded(
                           child: Elevatednextbutton(
                             onTap: () {},
-                            isEnabled:
-                                !_shouldShowSelector(), // Enable when selector is hidden
+                            isEnabled: !_shouldShowSelector(),
                           ),
                         ),
                       ],

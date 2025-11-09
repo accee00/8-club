@@ -7,6 +7,7 @@ import 'package:eightclub/core/widgets/wave_background.dart';
 import 'package:eightclub/core/widgets/wave_progress_indicator.dart';
 import 'package:eightclub/features/experience_selection/models/experience_model.dart';
 import 'package:eightclub/features/experience_selection/presentation/bloc/selection_bloc.dart';
+import 'package:eightclub/features/onboard/presentation/view/onboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -144,8 +145,8 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
                   children: [
                     SizedBox(
                       height: isKeyboardOpen
-                          ? context.height * 0.01
-                          : context.height * 0.17 + 40,
+                          ? context.height * 0.06
+                          : context.height * 0.30,
                     ),
                     Text('01', style: context.textTheme.labelMedium),
                     const SizedBox(height: 10),
@@ -273,10 +274,20 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
 
                     const SizedBox(height: 20),
 
-                    CustomTextFeild(
+                    CustomTextField(
                       controller: _textController,
                       maxLines: adaptiveMaxLines,
                       hintText: '/ Describe your perfect hotspot',
+                      maxLength: 250,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Description is empty.';
+                        }
+                        if (value.length > 250) {
+                          return 'Description is greater than 250.';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 15),
                     Elevatednextbutton(
@@ -288,6 +299,10 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
                                 .toList(),
                             _textController.text,
                           ),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => OnboardScreen()),
                         );
                       },
                       isEnabled: _selectedIndices.isNotEmpty,

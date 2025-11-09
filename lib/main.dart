@@ -1,7 +1,7 @@
 import 'package:eightclub/core/constants/app_theme.dart';
 import 'package:eightclub/core/di/init_di.dart';
 import 'package:eightclub/features/experience_selection/presentation/bloc/selection_bloc.dart';
-import 'package:eightclub/features/onboard/presentation/view/onboard_screen.dart';
+import 'package:eightclub/features/experience_selection/presentation/view/selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      home: OnboardScreen(),
+      home: ExperienceSelectionScreen(),
     );
   }
 }
