@@ -15,10 +15,10 @@ The initial screen provides an intuitive interface for users to select their pre
 - ✅ **Visual Feedback**
   - Selected cards display in full color with distinctive styling
   - Unselected cards automatically convert to **grayscale** for clear visual distinction
-  - Selected card **smoothly animates to the first position** ⭐
+  - Selected card **smoothly animates to the first position** 
 - ✅ **Multiple Selection Support** - Choose one or more experience types simultaneously
 - ✅ **Rich Text Input** - Multi-line text field with **250-character limit**
-- ✅ **Smart State Management** - Selected IDs and text input persist across navigation
+- ✅ **Smart State Management** - Selected Experience and text input persist across navigation
 - ✅ **Seamless Navigation** - Console logging of state before transitioning to next screen
 
 ---
@@ -30,15 +30,15 @@ An advanced screen designed to capture diverse user responses through multiple i
 #### **Input Capabilities**
 - ✅ **Flexible Text Input** - Multi-line text field supporting up to **600 characters**
 - ✅ **Media Recording**
-  - 🎙️ Audio recording with **real-time waveform visualization** ⭐
+  - 🎙️ Audio recording with **real-time waveform visualization** 
   - 🎥 Video recording with preview
   - Dynamic UI that **removes record buttons** after successful capture
   
 #### **Recording Controls**
 - ✅ **Start, pause, and cancel** recording mid-session
-- ✅ **Delete recorded assets** with confirmation ⭐
+- ✅ **Delete recorded assets** 
 - ✅ **Visual feedback** during recording process
-- ✅ **Animated Transitions** - Smooth width animation of Next button ⭐
+- ✅ **Animated Transitions** - Smooth width animation of Next button
 
 ---
 
@@ -49,7 +49,7 @@ An advanced screen designed to capture diverse user responses through multiple i
 - 🎯 **Pixel-Perfect Implementation** - Strict adherence to Figma design specifications
 - 📱 **Fully Responsive** - Seamless adaptation to all screen sizes and orientations
 - 🎨 **Consistent Aesthetics** - Uniform spacing, typography, and color schemes
-- ⌨️ **Smart Keyboard Handling** - Prevents layout issues during viewport changes ⭐
+- ⌨️ **Smart Keyboard Handling** - Prevents layout issues during viewport changes 
 
 ---
 
