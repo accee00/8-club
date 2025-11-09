@@ -27,8 +27,8 @@ class Elevatednextbutton extends StatelessWidget {
                   colors: [
                     const Color(0xFF1A1A1A),
                     const Color(0xFF2D2D2D),
-                    const Color(0xFF252525), // Medium
-                    const Color(0xFF1C1C1C), // Darker at bottom
+                    const Color(0xFF252525),
+                    const Color(0xFF1C1C1C),
                   ],
                   stops: const [0.0, 0.3, 0.7, 1.0],
                   begin: Alignment.topLeft,

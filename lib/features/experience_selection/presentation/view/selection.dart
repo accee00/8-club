@@ -83,6 +83,9 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final isKeyboardOpen = keyboardHeight > 0;
+    final adaptiveMaxLines = isKeyboardOpen ? 3 : 5;
     return BlocConsumer<SelectionBloc, SelectionState>(
       listener: (BuildContext context, SelectionState state) {
         if (state is ExperienceSelectedState) {
@@ -98,7 +101,6 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
 
         return Scaffold(
           resizeToAvoidBottomInset: true,
-          extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -133,106 +135,120 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
             ],
           ),
           body: WaveBackground(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(height: context.height * 0.12 + 40),
-                  Text('01', style: context.textTheme.labelMedium),
-                  const SizedBox(height: 10),
-                  Text(
-                    'What kind of hotspots do you want to host?',
-                    style: context.textTheme.displayMedium,
-                  ),
-                  const SizedBox(height: 20),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: isKeyboardOpen
+                          ? context.height * 0.01
+                          : context.height * 0.17 + 40,
+                    ),
+                    Text('01', style: context.textTheme.labelMedium),
+                    const SizedBox(height: 10),
+                    Text(
+                      'What kind of hotspots do you want to host?',
+                      style: isKeyboardOpen
+                          ? context.textTheme.bodyMedium?.copyWith(
+                              color: context.colorScheme.onSurface,
+                            )
+                          : context.textTheme.displayMedium,
+                    ),
+                    const SizedBox(height: 20),
 
-                  SizedBox(
-                    height: 140,
-                    child: AnimatedList(
-                      key: ValueKey(_orderedExperiences.length),
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      initialItemCount: _orderedExperiences.length,
-                      itemBuilder: (context, index, animation) {
-                        final experience = _orderedExperiences[index];
-                        final originalIndex = _getOriginalIndex(index, state);
-                        final isSelected = _selectedIndices.contains(
-                          originalIndex,
-                        );
-                        final tiltAngle = index.isEven ? -0.05 : 0.05;
+                    SizedBox(
+                      height: 140,
+                      child: AnimatedList(
+                        key: ValueKey(_orderedExperiences.length),
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        initialItemCount: _orderedExperiences.length,
+                        itemBuilder: (context, index, animation) {
+                          final experience = _orderedExperiences[index];
+                          final originalIndex = _getOriginalIndex(index, state);
+                          final isSelected = _selectedIndices.contains(
+                            originalIndex,
+                          );
+                          final tiltAngle = index.isEven ? -0.05 : 0.05;
 
-                        return SlideTransition(
-                          position: animation.drive(
-                            Tween<Offset>(
-                              begin: const Offset(0.3, 0),
-                              end: Offset.zero,
-                            ).chain(CurveTween(curve: Curves.easeOut)),
-                          ),
-                          child: FadeTransition(
-                            opacity: animation,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                right: index < _orderedExperiences.length - 1
-                                    ? 22
-                                    : 0,
-                              ),
-                              child: GestureDetector(
-                                onTap: () =>
-                                    _onExperienceTap(originalIndex, state),
-                                child: AnimatedScale(
-                                  scale: isSelected ? 1.0 : 0.95,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                  child: Transform.rotate(
-                                    angle: tiltAngle,
-                                    child: AnimatedContainer(
-                                      duration: const Duration(
-                                        milliseconds: 300,
-                                      ),
-                                      curve: Curves.easeInOut,
-                                      width: 140,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: isSelected
-                                            ? [
-                                                BoxShadow(
-                                                  color: context
-                                                      .colorScheme
-                                                      .secondary
-                                                      .withAlpha(100),
-                                                  blurRadius: 12,
-                                                  spreadRadius: 2,
-                                                ),
-                                              ]
-                                            : [],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: ColorFiltered(
-                                          colorFilter: isSelected
-                                              ? const ColorFilter.mode(
-                                                  Colors.transparent,
-                                                  BlendMode.saturation,
-                                                )
-                                              : const ColorFilter.mode(
-                                                  Colors.grey,
-                                                  BlendMode.saturation,
-                                                ),
-                                          child: Image.network(
-                                            experience.imageUrl,
-                                            height: 180,
-                                            width: 140,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (context, _, __) =>
-                                                Container(
-                                                  color: Colors.grey.shade800,
-                                                  child: const Icon(
-                                                    Icons.image_not_supported,
-                                                    color: Colors.white54,
+                          return SlideTransition(
+                            position: animation.drive(
+                              Tween<Offset>(
+                                begin: const Offset(0.3, 0),
+                                end: Offset.zero,
+                              ).chain(CurveTween(curve: Curves.easeOut)),
+                            ),
+                            child: FadeTransition(
+                              opacity: animation,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  right: index < _orderedExperiences.length - 1
+                                      ? 22
+                                      : 0,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      _onExperienceTap(originalIndex, state),
+                                  child: AnimatedScale(
+                                    scale: isSelected ? 1.0 : 0.95,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    child: Transform.rotate(
+                                      angle: tiltAngle,
+                                      child: AnimatedContainer(
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        curve: Curves.easeInOut,
+                                        width: 140,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          boxShadow: isSelected
+                                              ? [
+                                                  BoxShadow(
+                                                    color: context
+                                                        .colorScheme
+                                                        .secondary
+                                                        .withAlpha(100),
+                                                    blurRadius: 12,
+                                                    spreadRadius: 2,
                                                   ),
-                                                ),
+                                                ]
+                                              : [],
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          child: ColorFiltered(
+                                            colorFilter: isSelected
+                                                ? const ColorFilter.mode(
+                                                    Colors.transparent,
+                                                    BlendMode.saturation,
+                                                  )
+                                                : const ColorFilter.mode(
+                                                    Colors.grey,
+                                                    BlendMode.saturation,
+                                                  ),
+                                            child: Image.network(
+                                              experience.imageUrl,
+                                              height: 180,
+                                              width: 140,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, _, __) =>
+                                                  Container(
+                                                    color: Colors.grey.shade800,
+                                                    child: const Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Colors.white54,
+                                                    ),
+                                                  ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -241,43 +257,43 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
                                 ),
                               ),
                             ),
+                          );
+                        },
+                      ),
+                    ),
+                    if (state is ExperienceLoadingFailure)
+                      Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: context.textTheme.bodyLarge,
+                        ),
+                      )
+                    else
+                      SizedBox.shrink(),
+
+                    const SizedBox(height: 20),
+
+                    CustomTextFeild(
+                      controller: _textController,
+                      maxLines: adaptiveMaxLines,
+                      hintText: '/ Describe your perfect hotspot',
+                    ),
+                    const SizedBox(height: 15),
+                    Elevatednextbutton(
+                      onTap: () {
+                        context.read<SelectionBloc>().add(
+                          SelectExperience(
+                            _selectedIndices
+                                .map((index) => state.experiences[index])
+                                .toList(),
+                            _textController.text,
                           ),
                         );
                       },
+                      isEnabled: _selectedIndices.isNotEmpty,
                     ),
-                  ),
-                  if (state is ExperienceLoadingFailure)
-                    Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: context.textTheme.bodyLarge,
-                      ),
-                    )
-                  else
-                    SizedBox.shrink(),
-
-                  const SizedBox(height: 20),
-
-                  CustomTextFeild(
-                    controller: _textController,
-                    maxLines: 5,
-                    hintText: '/ Describe your perfect hotspot',
-                  ),
-                  const SizedBox(height: 15),
-                  Elevatednextbutton(
-                    onTap: () {
-                      context.read<SelectionBloc>().add(
-                        SelectExperience(
-                          _selectedIndices
-                              .map((index) => state.experiences[index])
-                              .toList(),
-                          _textController.text,
-                        ),
-                      );
-                    },
-                    isEnabled: _selectedIndices.isNotEmpty,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

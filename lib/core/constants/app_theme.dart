@@ -16,6 +16,7 @@ class AppTheme {
       surface: AppColors.base2Second,
       error: AppColors.negative,
       onSurface: AppColors.text1,
+      primaryContainer: Color(0xff5961FF),
     ),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 18),

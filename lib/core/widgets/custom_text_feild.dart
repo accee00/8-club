@@ -19,6 +19,7 @@ class CustomTextFeild extends StatelessWidget {
         color: context.colorScheme.surface,
       ),
       child: TextField(
+        textInputAction: TextInputAction.go,
         controller: controller,
         maxLines: maxLines,
         decoration: InputDecoration(hintText: hintText),
