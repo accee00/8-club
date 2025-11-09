@@ -24,6 +24,7 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
   final Set<int> _selectedIndices = {};
   List<dynamic> _orderedExperiences = [];
   final ScrollController _scrollController = ScrollController();
+  double _progress = 0.3; // Initial progress
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
         _selectedIndices.add(originalIndex);
       }
       _reorderExperiences(state);
+      _updateProgress(state);
     });
 
     if (_scrollController.hasClients) {
@@ -53,6 +55,23 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
+    }
+  }
+
+  void _updateProgress(SelectionState state) {
+    if (state is ExperienceLoadedState) {
+      final totalExperiences = state.experiences.length;
+      final selectedCount = _selectedIndices.length;
+
+      // Calculate progress: 0.3 base + up to 0.7 based on selections
+      // You can adjust this formula based on your needs
+      if (totalExperiences > 0) {
+        final selectionProgress = (selectedCount / totalExperiences) * 0.7;
+        _progress = 0.3 + selectionProgress;
+
+        // Ensure progress doesn't exceed 1.0
+        _progress = _progress.clamp(0.3, 1.0);
+      }
     }
   }
 
@@ -120,7 +139,7 @@ class _ExperienceSelectionScreenState extends State<ExperienceSelectionScreen> {
             title: SizedBox(
               width: context.width * 0.6,
               child: WaveProgressIndicator(
-                progress: 1,
+                progress: _progress, // Use the dynamic progress value
                 activeColor: context.colorScheme.secondary,
                 inactiveColor: const Color(0xFF404040),
                 height: 40,
